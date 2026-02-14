@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xsi:schemaLocation="
-		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
-		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+    xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+    xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+    xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+    xmlns:crypto="http://www.mulesoft.org/schema/mule/crypto"
+    xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+        http://www.mulesoft.org/schema/mule/crypto http://www.mulesoft.org/schema/mule/crypto/current/mule-crypto.xsd
+        http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+        http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="workday-wfm-absentismo-test-suite.xml" />
-	<munit:test name="workday-wfm-absentismo-test-suite-workday-wfm-absentismo-flowTest" doc:id="b70a7944-4752-433b-bca3-ded2c149b344" description="Test">
+    <munit:test name="absentismo-Flow-success" doc:id="b70a7944-4752-433b-bca3-ded2c149b344" description="Success end-to-end for absentismo-Flow with encryption disabled">
 		<munit:behavior >
+            <munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return>
+                    <munit-tools:variables>
+                        <munit-tools:variable key="varConfig" value="#[{
+                            InputFileName: '/tmp/absentismo-input.csv',
+                            OutputFileName: 'absentismo-output.csv',
+                            WorkdayFileName: 'absentismo-workday.csv',
+                            dwlMappingFile: 'absentismoFinalResponse.dwl',
+                            EncryptionFlag: false
+                        }]" />
+                    </munit-tools:variables>
+                </munit-tools:then-return>
+            </munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -18,6 +40,20 @@
                     <munit-tools:variables>
                         <munit-tools:variable key="varOriginalFilePayload" value="#['Absence_Date;First_Day_of_Leave;Last_Day_of_Leave;Employee_ID;Quantidade_Calculada_Horas;Accao\n2024-01-01;;;12345;8;']" />
                     </munit-tools:variables>
+                </munit-tools:then-return>
+            </munit-tools:mock-when>
+            <munit-tools:mock-when processor="set-variable" doc:name="Mock varMapping">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="varMapping" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return />
+            </munit-tools:mock-when>
+            <munit-tools:mock-when processor="ee:dynamic-evaluate" doc:name="Mock Dynamic Evaluate">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Dynamic Evaluate" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return>
+                    <munit-tools:payload value="#['col1;col2\n1;2']" mediaType="text/plain" />
                 </munit-tools:then-return>
             </munit-tools:mock-when>
 		<munit-tools:mock-when processor="flow-ref" doc:name="Mock upload-to-oracle-subflow">
@@ -44,7 +80,7 @@
             </munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="f6a1798a-a7cb-4135-8dca-b37d8a3e61a4" name="workday-wfm-absentismo-flow"/>
+            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="f6a1798a-a7cb-4135-8dca-b37d8a3e61a4" name="absentismo-Flow"/>
 		</munit:execution>
 		<munit:validation>
             <set-variable value="#[MunitTools::getResourceAsString('examples/successResponse.json')]" doc:name="Set varExpected" doc:id="782b6442-543b-4912-965b-4f449488364e" variableName="varExpected"/>
@@ -52,8 +88,24 @@
         
 </munit:validation>
 	</munit:test>
-    <munit:test name="workday-wfm-absentismo-flow-sftp-file-not-found" doc:id="91f9b1b6-9c75-4a20-9dc5-5bd12083a1b6" description="SFTP file not found should invoke error-flow">
+    <munit:test name="absentismo-Flow-sftp-file-not-found" doc:id="91f9b1b6-9c75-4a20-9dc5-5bd12083a1b6" description="SFTP file not found should invoke error-flow">
         <munit:behavior>
+            <munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return>
+                    <munit-tools:variables>
+                        <munit-tools:variable key="varConfig" value="#[{
+                            InputFileName: '/tmp/absentismo-input.csv',
+                            OutputFileName: 'absentismo-output.csv',
+                            WorkdayFileName: 'absentismo-workday.csv',
+                            dwlMappingFile: 'absentismoFinalResponse.dwl',
+                            EncryptionFlag: false
+                        }]" />
+                    </munit-tools:variables>
+                </munit-tools:then-return>
+            </munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file - not found">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -62,7 +114,7 @@
             </munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
-            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="efc5cb60-3e8d-4b0a-a68f-1e3d44e9be31" name="workday-wfm-absentismo-flow" />
+            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="efc5cb60-3e8d-4b0a-a68f-1e3d44e9be31" name="absentismo-Flow" />
         </munit:execution>
         <munit:validation>
             <munit-tools:verify-call processor="flow-ref" times="1">
@@ -88,8 +140,24 @@
             <munit-tools:assert-that doc:name="Assert error type" is="#[MunitTools::equalTo('SFTP:FILE_NOT_FOUND')]" expression="#[payload.resultCode]" />
         </munit:validation>
     </munit:test>
-    <munit:test name="workday-wfm-absentismo-flow-error-flow" doc:id="c1f9a2f8-5e6a-4b0a-9f3c-6a0b7162b0f0" description="Generic error should invoke error-flow">
+    <munit:test name="absentismo-Flow-upload-error" doc:id="c1f9a2f8-5e6a-4b0a-9f3c-6a0b7162b0f0" description="Upload error should invoke error-flow">
         <munit:behavior>
+            <munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return>
+                    <munit-tools:variables>
+                        <munit-tools:variable key="varConfig" value="#[{
+                            InputFileName: '/tmp/absentismo-input.csv',
+                            OutputFileName: 'absentismo-output.csv',
+                            WorkdayFileName: 'absentismo-workday.csv',
+                            dwlMappingFile: 'absentismoFinalResponse.dwl',
+                            EncryptionFlag: false
+                        }]" />
+                    </munit-tools:variables>
+                </munit-tools:then-return>
+            </munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -100,6 +168,20 @@
                     </munit-tools:variables>
                 </munit-tools:then-return>
             </munit-tools:mock-when>
+            <munit-tools:mock-when processor="set-variable" doc:name="Mock varMapping">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="varMapping" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return />
+            </munit-tools:mock-when>
+            <munit-tools:mock-when processor="ee:dynamic-evaluate" doc:name="Mock Dynamic Evaluate">
+                <munit-tools:with-attributes>
+                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Dynamic Evaluate" />
+                </munit-tools:with-attributes>
+                <munit-tools:then-return>
+                    <munit-tools:payload value="#['col1;col2\n1;2']" mediaType="text/plain" />
+                </munit-tools:then-return>
+            </munit-tools:mock-when>
             <munit-tools:mock-when processor="flow-ref" doc:name="Mock upload-to-oracle-subflow error">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="name" whereValue="upload-to-oracle-subflow" />
@@ -108,7 +190,7 @@
             </munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
-            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="dbd2d3f0-6c1a-4f6b-8d01-4fd02b5a5b2d" name="workday-wfm-absentismo-flow" />
+            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="dbd2d3f0-6c1a-4f6b-8d01-4fd02b5a5b2d" name="absentismo-Flow" />
         </munit:execution>
         <munit:validation>
             <munit-tools:verify-call processor="flow-ref" times="1">
