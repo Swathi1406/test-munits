@@ -82,7 +82,9 @@
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="name" whereValue="publish-gdrive-tlantic" />
                 </munit-tools:with-attributes>
-                <munit-tools:then-return />
+                <munit-tools:then-return>
+                    <munit-tools:payload value="#[readUrl('classpath://examples/successResponse.json', 'text/plain')]" mediaType="text/plain" />
+                </munit-tools:then-return>
             </munit-tools:mock-when>
         </munit:behavior>
 
