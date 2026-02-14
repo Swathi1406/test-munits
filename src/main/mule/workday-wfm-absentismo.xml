@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<flow name="absentismo-Flow" doc:id="62728fe4-8131-436f-a37e-af81c071088f" >
+		<scheduler doc:name="Scheduler absentismo 10:05 AM" doc:id="9adda24c-30e7-4c14-a371-d8397c45e594" >
+			<scheduling-strategy >
+				<cron expression="${absentismo.scheduler}" timeZone="GMT" />
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Log Absentismo Started" doc:id="d6bb08f0-0cf0-42ee-b91b-bb0fa13e3da2" message="Absentismo Scheduler flow started at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+		<set-variable value="PRT_WFM_PRT_Absentismo" doc:name="varFlowName" doc:id="ad05ee6a-985e-428c-9b90-b2b92312e5d3" variableName="varFlowName" />
+		<flow-ref doc:name="workday_wfm_Sub_Flow Flow Reference" doc:id="201d884a-207f-4420-ab9e-ffc35d09bcf9" name="workday_wfm_Sub_Flow" />
+		<logger level="INFO" doc:name="Log Absentismo WFM publish completed " doc:id="0b0f8306-6e95-489f-afdc-bb7550b1fbe0" message="Absentismo Scheduler flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+	</flow>
+</mule>

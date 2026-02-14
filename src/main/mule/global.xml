@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+    xmlns:crypto="http://www.mulesoft.org/schema/mule/crypto"
+	xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+	xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/crypto http://www.mulesoft.org/schema/mule/crypto/current/mule-crypto.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+    <configuration-properties doc:name="Configuration properties" doc:id="53c0d76b-9658-433d-8933-813d062f40ee" file="properties\common.properties" doc:description="Loading common.properties Config" />
+    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="46d0fd3e-9c33-4143-9095-0c38a6ff9388" key="${secure.key}" file="properties/${mule.env}.properties" doc:description="Loading env secure properties Config Files"/>
+    <configuration doc:name="Configuration" doc:id="7d0cf77f-35af-4bc7-a611-f1cfe6e0d90b" defaultErrorHandler-ref="exception-error-handler" doc:description="Global Error Handler Config"/>
+    <http:request-config name="HTTPS_Request_Oauth2token" doc:name="HTTP Request configuration" doc:id="745491b1-b47b-4743-abf2-d7ffaba8583c" doc:description="Google API Oauth2 Token Config" responseTimeout="${google.auchan.timeout}">
+		<http:request-connection host="${google.auchan.oauth2token.host}" protocol="HTTPS">
+			<reconnection >
+				<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" blocking="false" />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="HTTPS_Request_GoogleFileUpload" doc:name="HTTP Request configuration" doc:id="e77fd78e-0826-46e9-96bf-5d669bd53d8f" responseTimeout="${google.auchan.timeout}" doc:description="Google API File Upload Config">
+		<http:request-connection protocol="HTTPS" host="${google.auchan.fileupload.host}">
+			<reconnection >
+				<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" blocking="false" />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_Datapool_Logs" doc:name="HTTP Request configuration" doc:id="38016a5c-1f1b-4958-adfa-d8536493d191" doc:description="Datapool Logs System API Config" responseTimeout="${datapool.timeout}">
+		<http:request-connection host="${secure::datapool.host}" port="${secure::datapool.port}" protocol="HTTPS">
+			<reconnection >
+				<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" blocking="false" />
+			</reconnection>
+			<http:authentication >
+				<http:basic-authentication username="${secure::datapool.username}" password="${secure::datapool.password}" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<sftp:config name="Auchan_SFTP_Config" doc:name="SFTP Config" doc:id="9480c58a-774c-4f4e-9fe0-abcc6e83bf2d" doc:description="Auchan SFTP Config">
+		<sftp:connection host="${secure::sftp.host}" username="${secure::sftp.username}" password="${secure::sftp.password}" port="${secure::sftp.port}" connectionTimeout="${sftp.connTimeout}" responseTimeout="${sftp.respTimeout}" workingDir="${secure::sftp.dir}">
+			<reconnection >
+				<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" blocking="false" />
+			</reconnection>
+		</sftp:connection>
+	</sftp:config>
+	<crypto:pgp-config name="Crypto_Pgp" doc:name="Crypto Pgp" doc:id="099a3328-128d-439a-969b-2b4a88fa71ea" publicKeyring="keys/Workday_Global_secret-key-4A43A68D.asc" privateKeyring="keys/Workday_SecretKey.asc">
+		<crypto:pgp-key-infos >
+			<crypto:pgp-asymmetric-key-info keyId="workday-key" fingerprint="9B5E3D3A829DB57420C526B825FBB8844A43A68D" passphrase="7ae79ba0483a999b6d5eb502ad884d6c61c1c5a5ac4fcbbb089de20d6a22ad18" />
+		</crypto:pgp-key-infos>
+	</crypto:pgp-config>
+	<s3:config name="Amazon_S3_Configuration" doc:name="Amazon S3 Configuration" doc:id="241775d5-bd4f-4235-a7fc-ff39db33c022" doc:description="Amazon S3 Config">
+		<s3:connection accessKey="${secure::amazon.access.key}" secretKey="${secure::amazon.secret.key}" region="${secure::amazon.region}" customServiceEndpoint="${secure::amazon.service.endpoint}">
+			<reconnection >
+				<reconnect frequency="${reconnection.frequency}" count="${reconnection.attempts}" blocking="false" />
+			</reconnection>
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</s3:connection>
+	</s3:config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="4fe63ec4-08cf-4fb4-a12e-b88e48a7b108" >
+		<file:connection workingDir="C:\Users\jkumar38\Talend\Source Files" />
+	</file:config>
+</mule>

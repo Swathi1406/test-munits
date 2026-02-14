@@ -1,0 +1,16 @@
+--rfc2387_auchan_multipart
+Content-Type: application/json; charset=UTF-8
+
+{
+    "name": #[vars.varOutputFileName],
+    "parents": [#[vars.varParentFolder]],
+    "mimeType": "text/csv"
+}
+
+--rfc2387_auchan_multipart
+Content-Type: "text/csv"
+Content-Transfer-Encoding: base64
+
+#[%dw 2.0 output text/plain --- payload]
+
+--rfc2387_auchan_multipart--

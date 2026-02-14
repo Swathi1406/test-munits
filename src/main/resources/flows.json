@@ -1,0 +1,46 @@
+{
+  "extension": ".csv",
+  "flows": {
+    "PRT_WFM_PRT_Absentismo": {
+      "inputPrefix": "Absentismo",
+      "outputPrefix": "Absences_Auchan_",
+      "encryptionFlag": false,
+      "dwlMappingFile":"absentismoFinalResponse.dwl"
+    },
+    "PRT_WFM_PRT_Admissao": {
+      "inputPrefix": "Admissao",
+      "outputPrefix": "Colaborators_Adm_Auchan_",
+      "encryptionFlag": true,
+      "dwlMappingFile": "admissaoFinalResponse.dwl"
+    },
+    "PRT_WFM_PRT_Assiduidade": {
+      "inputPrefix": "TlanticPicagem",
+      "outputPrefix": "TlanticPicagem_",
+      "encryptionFlag": false,
+      "dwlMappingFile": "assiduidadeFinalResponse.dwl"
+    },
+    "PRT_WFM_PRT_Attendence": {
+      "inputPrefix": "ScheduleExport",
+      "outputPrefix": "ScheduleExport_",
+      "encryptionFlag": false
+    },
+    "PRT_WFM_PRT_Cargahor": {
+      "inputPrefix": "Carga_Horaria",
+      "outputPrefix": "WorkloadChanges_Auchan_",
+      "encryptionFlag": true,
+      "dwlMappingFile": "cargaHorariaFinalResponse.dwl"
+    },
+    "PRT_WFM_PRT_Demissao": {
+      "inputPrefix": "Desligamento",
+      "outputPrefix": "Colaborators_Dem_Auchan_",
+      "encryptionFlag": true,
+      "dwlMappingFile": "demissaoFinalResponse.dwl"
+    },
+    "PRT_WFM_PRT_Transferencia": {
+      "inputPrefix": "Transferencia",
+      "outputPrefix": "ColabTransfer_Auchan_",
+      "encryptionFlag": true,
+      "dwlMappingFile": "transferenciaFinalResponse.dwl"
+    }
+  }
+}

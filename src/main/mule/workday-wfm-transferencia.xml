@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="workday-wfm-transferencia-flow" doc:id="a8120d34-cecd-44af-9385-30a9e85962aa" >
+	<scheduler doc:name="Scheduler admissao 10 AM" doc:id="5c790850-32ec-41fa-90e9-990ae4218d7f" >
+			<scheduling-strategy >
+				<cron expression="${transferencia.scheduler}" timeZone="GMT" />
+			</scheduling-strategy>
+		</scheduler>
+		<set-variable value="PRT_WFM_PRT_Transferencia" doc:name="varFlowName" doc:id="5f5d8619-16b5-4a7e-991a-3975637b061d" variableName="varFlowName" />
+		<flow-ref doc:name="workday_wfm_Sub_Flow Flow Reference" doc:id="df8351cd-ff4e-4ae8-9f78-a2c0b9b8a0df" name="workday_wfm_Sub_Flow" />
+		<logger level="INFO" doc:name="Log transferencia WFM publish completed" doc:id="2dc9f63d-3d79-4b97-9334-8dd88983b0dc" message="Transferencia Scheduler flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+	</flow>
+</mule>

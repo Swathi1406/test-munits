@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<error-handler name="exception-error-handler" doc:id="0a4845e0-04df-418f-9a24-749550545bcf" doc:description="A global error handler can be useful if you want more than one flow or Try scope to handle errors in the same way.">
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="701b5fc5-a286-4901-af2c-2c108a115bf0" type="ANY" doc:description="On Error Propagate catches all the Errors and process the Mule Flow inside the On Error Propagate block and return the error response">
+			<flow-ref doc:name="error-flow" doc:id="4e89d2bb-08e1-42ab-9b35-fcbf6c84bc6a" name="error-flow" doc:description="Flow Reference routes to raise-error-notifications and executes the processors in that flow." />
+		</on-error-propagate>
+	</error-handler>
+	<sub-flow name="error-flow" doc:id="b7c238d0-a64b-4f28-ae28-77a896a9db17" doc:description="This flow is responsible to raise error notifications" >
+		<ee:transform doc:name="Error Response" doc:id="6c6b92db-c810-4226-b2f7-7fb6827e0ffe" >
+			<ee:message >
+				<ee:set-payload resource="dwls/errorResponseMapping.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log Error Response" doc:id="39dd0b08-ac71-4615-a0e8-30208bb3710f" doc:description="Log Error Response" message="Response - #[payload]" category="com.auchan.prc-auchan-workday-wfm" />
+	</sub-flow>
+</mule>

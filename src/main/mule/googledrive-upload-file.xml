@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+		
+	<sub-flow name="googledrive-upload-fileSub_Flow" doc:id="652990c5-9d75-4d5a-a1a4-2554dc0fc69b" >
+		<logger level="INFO" doc:name="Log that flow triggered" doc:id="48011dc3-6013-4f7a-8c8c-62976196d7da" doc:description="This Logger component logs that Flow triggered" message="Google Drive Upload File flow triggered at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+		<flow-ref doc:name="Get Access Token" doc:id="c621ddb4-43af-4cff-902d-b05ffdb76782" doc:description="Flow Reference routes to get-access-token-sub-flow and executes the processors in that flow." name="get-access-token-sub-flow" target="varAccessToken" targetValue="#[payload.access_token]" />
+		<logger level="INFO" doc:name="Log File Name &amp; Folder" doc:id="74fba4fb-7fdb-4de9-b72a-49c59b94301b" message="File Name&gt;&gt;#[vars.varOutputFileName] and parentFolder&gt;&gt;#[vars.varParentFolder]" category="com.auchan.prc-auchan-workday-wfm" />
+		<parse-template doc:name="Parse Template" doc:id="eb8f8a0d-f8b8-4912-b09e-7970f4a9d848" doc:description="The Parse Template component is used for processing a template and obtaining a result." location="template/google_drive_fileupload_body_template.txt" targetValue="#[payload]" outputMimeType="text/plain" />
+		<logger level="INFO" doc:name="Logger Info" doc:id="413b22f2-c909-4edd-a657-8665cc0ff9c7" message="Google Drive File Upload Request Formed" category="com.auchan.prc-auchan-workday-wfm" />
+		<logger level="DEBUG" doc:name="Log Request Debug" doc:id="f853cbe8-f098-4de3-a5d0-8c75262b62b7" doc:description="Log File Upload Request" message="Google Drive File Upload Request - #[payload]" category="com.auchan.prc-auchan-workday-wfm" />
+		<http:request method="POST" doc:name="Google Drive - File Upload" doc:id="8d68ef48-2f98-43b9-9a4a-6dad33db27da" doc:description="The HTTP Request Connector calls Google Bucket File Upload API to upload files" config-ref="HTTPS_Request_GoogleFileUpload" path="${google.auchan.fileupload.path}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Authorization" : "Bearer " ++ vars.varAccessToken,
+	"Content-Type" : "multipart/related; boundary=rfc2387_auchan_multipart"
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"supportsAllDrives" : "true",
+	"uploadType" : "multipart"
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Log that file uploaded on Google Drive" doc:id="9bfbeb67-87ca-4335-ba24-cf5d92c2bf41" doc:description="Log that file uploaded on Google Drive" message="#[payload.name] file uploaded on Google Drive" category="com.auchan.prc-auchan-workday-wfm" />
+		<ee:transform doc:name="Map Success Response" doc:id="6e7f1de6-035c-4896-8aac-e2ae8c3cea1f" >
+			<ee:message >
+				<ee:set-payload resource="dwls/mapSuccessResponse.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log Success Response" doc:id="3e25d5d7-e353-48f2-ab94-cc11b8233169" doc:description="Log Success Response" message="Response - #[payload]" category="com.auchan.prc-auchan-workday-wfm" />
+		<logger level="INFO" doc:name="Log that Flow completed" doc:id="1a07a402-2a1e-4b32-a293-918fb74ec3a1" doc:description="Log that flow completed" message="Google Drive Upload File flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+	</sub-flow>
+</mule>

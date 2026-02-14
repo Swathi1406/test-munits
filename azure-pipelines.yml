@@ -1,0 +1,147 @@
+---
+trigger: none
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+parameters:
+  - name: onlyDeploy # use this parameter if you want to deploy an existent artifact in Anypoint Exchange;
+    type: boolean
+    default: false
+    values:
+      - true
+      - false
+  - name: muleenv
+    type: string
+    default: uat
+    displayName: Please select the mule.env
+    values:
+      - dev
+      - uat
+  - name: anypointenv
+    type: string
+    default: UAT
+    displayName: Please select the anypoint.environment
+    values:
+      - DEV
+      - UAT
+  - name: runtimeVersion
+    type: string
+    default: $(mule_version_cloudhub_latest)
+  - name: replicas
+    type: string
+    default: $(replicas)
+  - name: vCores
+    type: string
+    default: $(vCores)
+  - name: appname
+    displayName: app name?
+    type: string
+    default: $(Build.Repository.Name)
+
+variables:
+  - group: mule-deployment-cloudhub-group
+  - group: ${{ parameters.muleenv }}-cloudhub-anypoint-credentials
+  - name: MAVEN_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.m2/repository
+  - name: MAVEN_OPTS_BUILD
+    value: -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests=false -Dmule.env=$(mule_env) -Dsecure.key=$(secure_key)
+  - name: MAVEN_OPTS_DEPLOY
+    value: -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -DskipTests=true -Dmule.env=$(mule_env) -Dsecure.key=$(secure_key)
+
+pool:
+  vmImage: 'ubuntu-22.04'
+
+stages:
+  - stage: DeployToDevelopment
+    jobs:
+      - deployment: DeployApp
+        displayName: Deploy App
+        environment: ${{ parameters.anypointenv }}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - script: |
+                    echo "${{ parameters.onlyDeploy }}"
+                    if [ "${{ parameters.onlyDeploy }}" = "False" ]; then
+                      echo "##vso[task.setvariable variable=mavenGoal]clean deploy $(MAVEN_OPTS_BUILD)";
+                    else
+                      echo "##vso[task.setvariable variable=mavenGoal]clean deploy -DmuleDeploy $(MAVEN_OPTS_DEPLOY)";
+                    fi
+                  displayName: 'Set maven goal to $(mavenGoal)'
+
+                - task: DownloadSecureFile@1
+                  name: settingsxml
+                  inputs:
+                    secureFile: settingscloudhub.xml
+
+                - task: PowerShell@2
+                  inputs:
+                    targetType: inline
+                    script: |
+                      New-Item -Type Directory -Force "${HOME}/.m2"
+                      Copy-Item -Force "$(settingsxml.secureFilePath)" "${HOME}/.m2/settings.xml"
+                  displayName: 'Copy settingscloudhub.xml to .m2 folder'
+                
+                # Build, test and publish to Exchange - check if parameter
+                
+                - task: Maven@4
+                  condition: eq('${{ parameters.onlyDeploy }}', 'false')  # Run only if parameters.onlyDeploy is false
+                  displayName: 'Build and deploy to Exchange'
+                  env:
+                    businessGroupId: $(businessGroupId)
+                    environment: $(anypoint_environment)
+                    anypoint_target: $(anypoint_target)
+                    mule_version: ${{ parameters.runtimeVersion }}
+                    release_channel: $(anypoint_release_channel_cloudhub)
+                    java_version: $(java_version_17)
+                    replicas: ${{ parameters.replicas }}
+                    vCores: ${{ parameters.vCores }}
+                    mule_env: $(mule_env)
+                    secure_key: $(secure_Key)
+                    anypoint_cicd_client_id: $(anypoint_cicd_client_id)
+                    anypoint_cicd_client_secret: $(anypoint_cicd_client_secret)
+                    anypoint_platform_client_id: $(anypoint_platform_client_id)
+                    anypoint_platform_client_secret: $(anypoint_platform_client_secret)
+                  inputs:
+                    mavenPomFile: pom.xml
+                    mavenOptions: -Xmx3072m
+                    jdkVersionOption: "17"
+                    jdkArchitectureOption: x64
+                    mavenAuthenticateFeed: true
+                    publishJUnitResults: true
+                    testResultsFiles: "**/surefire-reports/TEST-*.xml"
+                    javaHomeOption: JDKVersion
+                    mavenVersionOption: Default
+                    effectivePomSkip: true
+                    sonarQubeRunAnalysis: false
+                    goals: 'clean deploy $(MAVEN_OPTS_BUILD)'
+                - task: Maven@4
+                  displayName: 'deploy to CloudHub2.0'
+                  env:
+                    businessGroupId: $(businessGroupId)
+                    environment: $(anypoint_environment)
+                    anypoint_target: $(anypoint_target)
+                    mule_version: ${{ parameters.runtimeVersion }}
+                    release_channel: $(anypoint_release_channel_cloudhub)
+                    java_version: $(java_version_17)
+                    replicas: ${{ parameters.replicas }}
+                    vCores: ${{ parameters.vCores }}
+                    mule_env: $(mule_env)
+                    secure_key: $(secure_Key)
+                    anypoint_cicd_client_id: $(anypoint_cicd_client_id)
+                    anypoint_cicd_client_secret: $(anypoint_cicd_client_secret)
+                    anypoint_platform_client_id: $(anypoint_platform_client_id)
+                    anypoint_platform_client_secret: $(anypoint_platform_client_secret)
+                  inputs:
+                    mavenPomFile: pom.xml
+                    mavenOptions: -Xmx3072m
+                    jdkVersionOption: "17"
+                    jdkArchitectureOption: x64
+                    mavenAuthenticateFeed: true
+                    publishJUnitResults: true
+                    testResultsFiles: "**/surefire-reports/TEST-*.xml"
+                    javaHomeOption: JDKVersion
+                    mavenVersionOption: Default
+                    effectivePomSkip: true
+                    sonarQubeRunAnalysis: false
+                    goals: 'clean deploy -DmuleDeploy $(MAVEN_OPTS_DEPLOY)'

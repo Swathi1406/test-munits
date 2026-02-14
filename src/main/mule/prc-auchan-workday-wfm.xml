@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+      xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:os="http://www.mulesoft.org/schema/mule/os"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:crypto="http://www.mulesoft.org/schema/mule/crypto" 
+       xmlns:schedulers="http://www.mulesoft.org/schema/mule/schedulers" xmlns:objectstore="http://www.mulesoft.org/schema/mule/objectstore" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+        http://www.mulesoft.org/schema/mule/core           http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/sftp           http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+        http://www.mulesoft.org/schema/mule/http           http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/ee/core        http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/crypto         http://www.mulesoft.org/schema/mule/crypto/current/mule-crypto.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+
+    <sub-flow name="workday_wfm_Sub_Flow" doc:id="47fc09b9-df3f-4654-bc62-79a1f457fb58">
+	<logger level="INFO" message="Reading Flow configurations" doc:name="Log that Flow Config initialized" category="com.auchan.prc-auchan-workday-wfm"/>
+		<ee:transform doc:name="Build Input/Output Filenames">
+        <ee:message>
+        </ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dwls/varConfig.dwl" variableName="varConfig" />
+			</ee:variables>
+    
+</ee:transform>
+	<try doc:name="Try" doc:id="d023182a-7ad9-478e-9171-85bfe39abb42" >
+			<sftp:read config-ref="Auchan_SFTP_Config" path="#[vars.varConfig.InputFileName]" doc:name="SFTP Read input file" timeBetweenSizeCheckUnit="MICROSECONDS" target="varOriginalFilePayload" outputMimeType="text/plain" outputEncoding="ISO-8859-15"/>
+			<!-- [STUDIO:"Read input file"]<file:read doc:name="Read input file" doc:id="243b4b2a-676e-44dd-883f-efde5dfb1f68" config-ref="File_Config" path="#[vars.varConfig.InputFileName&#93;" outputMimeType="text/plain" target="varOriginalFilePayload" outputEncoding="ISO-8859-15"/> [STUDIO] -->
+		</try>
+		<choice doc:name="PGP Optional">
+            <when expression="#[((vars.varConfig.EncryptionFlag) as Boolean)]">
+                <logger level="INFO" message="#['Decrypting (PGP) ' ++ (vars.inputFileInfo.originalFileName default 'current file')]"/>
+                <crypto:pgp-decrypt config-ref="Crypto_Pgp" doc:name="PGP Decrypt" target="varOriginalFilePayload">
+					<crypto:content ><![CDATA[#[vars.varOriginalFilePayload]]]></crypto:content>
+				</crypto:pgp-decrypt>
+            </when>
+            <otherwise>
+                <logger level="INFO" message="PGP disabled" category="com.auchan.prc-auchan-workday-wfm"/>
+            </otherwise>
+        </choice>
+		<set-variable value="#[%dw 2.0&#10;output application/dw&#10;---&#10;readUrl(&quot;classpath://dwls/&quot; ++ vars.varConfig.dwlMappingFile, 'text/plain')]" doc:name="varMapping" doc:id="e05bdc90-0cfb-41c1-b947-9d0048737c92" variableName="varMapping"/>
+		<ee:dynamic-evaluate doc:name="Dynamic Evaluate" doc:id="f1360c84-e017-4fc4-8af9-e947d4d4f4cf" expression="#[vars.varMapping]" target="varTransformedFilePayload"/>
+		<flow-ref doc:name="Upload to Oracle" doc:id="dc658cb0-e0e2-4f24-9692-4a8f1513a1ec" name="upload-to-oracle-subflow" />
+		<flow-ref doc:name="GDrive Workday" doc:id="18caf2f7-8343-47e8-89d8-13f343d8d8c2" name="publish-gdrive-workday" targetValue="#[vars.originalPayload]" />
+		<flow-ref doc:name="GDrive Tlantic" doc:id="602f4ec1-60eb-47e2-8d74-a8f7bcb603b7" name="publish-gdrive-tlantic" targetValue="#[vars.ouput]" />
+    
+</sub-flow>
+	<sub-flow name="upload-to-oracle-subflow" doc:name="Oracle Cloud Upload Subflow">
+        <logger level="INFO" message="#['Uploading to Oracle Cloud: ' ++ vars.varConfig.OutputFileName]" doc:name="Log that Oracle flow started" category="com.auchan.prc-auchan-workday-wfm"/>
+        <s3:put-object doc:name="Put Object" doc:id="88bce3d6-61a8-4d7c-89d4-4bc32eb337cc" config-ref="Amazon_S3_Configuration" bucketName="AuchanIntegration01" key="#[vars.varConfig.OutputFileName]" contentType="application/csv">
+			<s3:content ><![CDATA[#[vars.varTransformedFilePayload]]]></s3:content>
+		</s3:put-object>
+        <logger level="INFO" message="#['File uploaded to Oracle Cloud successfully: ' ++ vars.varConfig.OutputFileName]" doc:name="Log that Oracle flow ended" category="com.auchan.prc-auchan-workday-wfm"/>
+    </sub-flow>
+	<sub-flow name="publish-gdrive-tlantic" doc:name="Publish GDrive Tlantic">
+        <logger level="INFO" message="#['GDrive (Tlantic) upload: ' ++ vars.varConfig.OutputFileName]" doc:name="Log that Tlantic GDrive started" category="com.auchan.prc-auchan-workday-wfm"/>
+        
+        <set-variable value="${secure::google.auchan.parentfolder.tlantic}" doc:name="varParentFolder" doc:id="97fea50f-3609-4d3e-841f-3f7e6a113322" variableName="varParentFolder" />
+		<set-variable value="#[vars.varConfig.OutputFileName]" doc:name="varOutputFileName" doc:id="7cfd4035-aa8a-490c-9b6e-e92dfe0ec066" variableName="varOutputFileName"/>
+		<set-payload value='#[%dw 2.0&#10;import toBase64 from dw::core::Binaries&#10;output text/plain&#10;---&#10;toBase64(write(vars.varTransformedFilePayload, "application/csv"))]' doc:name="Set Payload file content" doc:id="5a2cdcac-9880-45a2-8b57-3724ea7843b1" />
+		<flow-ref doc:name="googledrive-upload-fileSub_Flow" doc:id="da9dcef2-9352-4aa6-beaa-f9711a580c96" name="googledrive-upload-fileSub_Flow"/>
+		<logger level="INFO" message="#['GDrive (Tlantic) upload done: ' ++ vars.varConfig.OutputFileName]" doc:name="Log that Tlantic upload susccess" category="com.auchan.prc-auchan-workday-wfm"/>
+    
+</sub-flow>
+	<sub-flow name="publish-gdrive-workday" doc:name="Publish GDrive Workday (Original)">
+        <logger level="INFO" message="#['GDrive (Workday) upload: ' ++ vars.varConfig.WorkdayFileName]" doc:name="Log that Workday GDrive started" category="com.auchan.prc-auchan-workday-wfm"/>
+        <set-variable value="${secure::google.auchan.parentfolder.workday}" doc:name="varParentFolder" doc:id="8e7ad6b8-3745-425d-9c0d-3dc03d1ae6d4" variableName="varParentFolder" />
+		<set-variable value="#[vars.varConfig.WorkdayFileName]" doc:name="varOutputFileName" doc:id="8f23f53a-3420-451c-9bdd-68a9ff6fb811" variableName="varOutputFileName" />
+		<set-payload value="#[%dw 2.0&#10;import toBase64 from dw::core::Binaries&#10;output text/plain&#10;---&#10;toBase64(vars.varOriginalFilePayload as Binary)]" doc:name="Set Payload file content" doc:id="16fd836e-dcc8-4db3-acd3-da5028a8b1cf" />
+		<flow-ref doc:name="googledrive-upload-fileSub_Flow" doc:id="b7091353-22f0-4efd-963d-4b525ddd4dfe" name="googledrive-upload-fileSub_Flow"/>
+		<logger level="INFO" message="#['GDrive (Workday) upload done: ' ++ vars.varConfig.WorkdayFileName]" doc:name="Log that Workday upload sucess" category="com.auchan.prc-auchan-workday-wfm"/>
+	
+</sub-flow>
+	</mule>

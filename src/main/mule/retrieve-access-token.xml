@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<sub-flow name="get-access-token-sub-flow" doc:id="e45b3096-5ee7-45ce-907f-9f8fb2677ddd" doc:description="This subflow retrieves OAuth JWT token and stores the response in a variable">
+		<flow-ref doc:name="get JWT Token" doc:id="765333bb-8311-4a75-b075-db4d70220af7" name="get-jwt-token-sub-flow" target="varLogJwtToken"/>
+		<logger level="DEBUG" doc:name="Log JWT Token" doc:id="98341ee5-05f0-4eb1-9577-45d4d04a97e9" message="JWT Token - #[vars.varLogJwtToken]" category="com.auchan.prc-auchan-workday-wfm" doc:description="Log JWT Token Payload"/>
+		<until-successful maxRetries="${reconnection.attempts}" doc:name="Until Successful" doc:id="f7cbcd8a-468e-4c02-9314-d77aa2345684" millisBetweenRetries="${reconnection.frequency}">
+			<http:request method="POST" doc:name="Exchange JWT with Access Token" doc:id="7fab14c6-d498-4c36-b22f-ecafb2fe7b87" config-ref="HTTPS_Request_Oauth2token" path="${google.auchan.oauth2token.path}" doc:description="The HTTP Request Connector retrieves access token">
+			<http:body><![CDATA[#[null]]]></http:body>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"grant_type" : "urn:ietf:params:oauth:grant-type:jwt-bearer",
+	"assertion": vars.varLogJwtToken
+}]]]></http:query-params>
+		</http:request>
+		</until-successful>
+	</sub-flow>
+	<sub-flow name="get-jwt-token-sub-flow" doc:id="9abaf40a-5705-4ae6-b3a2-abadecf4a064" doc:description="This subflow retrieves OAuth JWT token">
+		<logger level="INFO" doc:name="Log - Start JWT Flow" doc:id="28127558-f671-407a-a4c9-33b2e8ad4bc0" message='JWT Token Flow started' category="com.auchan.prc-auchan-workday-wfm" doc:description="This Logger component logs that Flow started"/>
+		<java:invoke-static doc:name="Create and sign JWT token" doc:id="736021d6-cbe5-46e3-996a-956afde3a78b" class="com.auchan.google.GenerateJWTToken" method="createJwtSignedHMAC(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" doc:description="The Invoke Static component creates and signs JWT Token">
+			<java:args ><![CDATA[#[{
+	issuer : "${secure::google.auchan.token.issuer}",
+	subject : "${secure::google.auchan.token.subject}",
+	scope : "${google.auchan.token.scope}",
+	tokenUrl : "${google.auchan.token.audience}",
+   	key : "${secure::google.auchan.token.key}",
+	tokenDuration : "${google.auchan.token.duration}"
+}]]]></java:args>
+		</java:invoke-static>
+		<ee:transform doc:name="Generated JWT" doc:id="bd3a260b-d26d-4d89-bb2d-312940a915f1">
+			<ee:message>
+				<ee:set-payload resource="dwls/send-generic-reponse.dwl" />
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="httpStatus"><![CDATA[201]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="DEBUG" doc:name="Log JWT Token" doc:id="1f5884e3-0d3c-4f97-856b-a2ed118d3f52" message="JWT Token Payload - #[payload]" category="com.auchan.prc-auchan-workday-wfm" doc:description="Log JWT Token Payload"/>
+	
+</sub-flow>
+</mule>
