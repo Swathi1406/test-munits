@@ -42,7 +42,9 @@
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
-                    <munit-tools:payload value="#['header1,header2\nvalue1,value2']" mediaType="text/plain" />
+                    <munit-tools:variables>
+                        <munit-tools:variable key="varOriginalFilePayload" value="#['Absence_Date;First_Day_of_Leave;Last_Day_of_Leave;Employee_ID;Quantidade_Calculada_Horas;Accao\n2024-01-01;;;12345;8;']" />
+                    </munit-tools:variables>
                 </munit-tools:then-return>
             </munit-tools:mock-when>
 
