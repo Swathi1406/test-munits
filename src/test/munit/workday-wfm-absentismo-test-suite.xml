@@ -79,16 +79,16 @@
                 </munit-tools:then-return>
             </munit-tools:mock-when>
 		</munit:behavior>
-		<munit:execution >
-            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="f6a1798a-a7cb-4135-8dca-b37d8a3e61a4" name="absentismo-Flow"/>
-		</munit:execution>
+        <munit:execution >
+            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="f6a1798a-a7cb-4135-8dca-b37d8a3e61a4" name="workday-wfm-absentismo-flow"/>
+        </munit:execution>
 		<munit:validation>
             <set-variable value="#[MunitTools::getResourceAsString('examples/successResponse.json')]" doc:name="Set varExpected" doc:id="782b6442-543b-4912-965b-4f449488364e" variableName="varExpected"/>
 			<munit-tools:assert-that doc:name="Assert that" doc:id="06832f3d-1509-4b68-ac3d-66b4451dca6f" is="#[MunitTools::equalTo(vars.varExpected)]" expression="#[payload]"/>
         
 </munit:validation>
 	</munit:test>
-    <munit:test name="absentismo-Flow-sftp-file-not-found" doc:id="91f9b1b6-9c75-4a20-9dc5-5bd12083a1b6" description="SFTP file not found should invoke error-flow">
+    <munit:test name="workday-wfm-absentismo-flow-sftp-file-not-found" doc:id="91f9b1b6-9c75-4a20-9dc5-5bd12083a1b6" description="SFTP file not found should invoke error-flow">
         <munit:behavior>
             <munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
                 <munit-tools:with-attributes>
@@ -110,11 +110,13 @@
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
                 </munit-tools:with-attributes>
-                <munit-tools:then-throw errorType="SFTP:FILE_NOT_FOUND" />
+                <munit-tools:then-return>
+                    <munit-tools:exception errorType="SFTP:FILE_NOT_FOUND" />
+                </munit-tools:then-return>
             </munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
-            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="efc5cb60-3e8d-4b0a-a68f-1e3d44e9be31" name="absentismo-Flow" />
+            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="efc5cb60-3e8d-4b0a-a68f-1e3d44e9be31" name="workday-wfm-absentismo-flow" />
         </munit:execution>
         <munit:validation>
             <munit-tools:verify-call processor="flow-ref" times="1">
@@ -140,7 +142,7 @@
             <munit-tools:assert-that doc:name="Assert error type" is="#[MunitTools::equalTo('SFTP:FILE_NOT_FOUND')]" expression="#[payload.resultCode]" />
         </munit:validation>
     </munit:test>
-    <munit:test name="absentismo-Flow-upload-error" doc:id="c1f9a2f8-5e6a-4b0a-9f3c-6a0b7162b0f0" description="Upload error should invoke error-flow">
+    <munit:test name="workday-wfm-absentismo-flow-upload-error" doc:id="c1f9a2f8-5e6a-4b0a-9f3c-6a0b7162b0f0" description="Upload error should invoke error-flow">
         <munit:behavior>
             <munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
                 <munit-tools:with-attributes>
@@ -186,11 +188,13 @@
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="name" whereValue="upload-to-oracle-subflow" />
                 </munit-tools:with-attributes>
-                <munit-tools:then-throw errorType="MULE:UNKNOWN" />
+                <munit-tools:then-return>
+                    <munit-tools:exception errorType="MULE:UNKNOWN" />
+                </munit-tools:then-return>
             </munit-tools:mock-when>
         </munit:behavior>
         <munit:execution>
-            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="dbd2d3f0-6c1a-4f6b-8d01-4fd02b5a5b2d" name="absentismo-Flow" />
+            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="dbd2d3f0-6c1a-4f6b-8d01-4fd02b5a5b2d" name="workday-wfm-absentismo-flow" />
         </munit:execution>
         <munit:validation>
             <munit-tools:verify-call processor="flow-ref" times="1">
