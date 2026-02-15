@@ -1,73 +1,41 @@
-INFO  2026-02-14 22:17:52,280 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_LITE @7103db90] com.auchan.prc-auchan-workday-wfm: Scheduler flow triggered at 2026-02-14T22:17:52.247040500+05:30[Asia/Calcutta]
-INFO  2026-02-14 22:17:52,489 [[MuleRuntime].uber.04: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @7a5d930b] com.auchan.prc-auchan-workday-wfm: PGP disabled
-Feb 14, 2026 10:17:52 PM org.mule.weave.v2.model.service.DefaultLoggingService$ logWarn
-WARNING: Using Weave Reader at Runtime May Cause Performance Issues. It is strongly advice to either use with `onlyData=true` or try other MimeType. This format was design for debugging and design only.
-INFO  2026-02-14 22:17:52,806 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @7a5d930b] com.auchan.prc-auchan-workday-wfm: absentismo Scheduler flow completed at 2026-02-14T22:17:52.806001500+05:30[Asia/Calcutta]
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-java.lang.AssertionError:  at file: [workday-wfm-absentismo-test-suite.xml], line: [82]
-Expected: "{\r\n\t\"resultCode\": \"Success\",\r\n\t\"resultDesc\": \"Success Notification sent successfully\"\r\n}" as String {encoding: "UTF-8", mediaType: "application/java; charset=UTF-8", mimeType: "application/java", class: "java.lang.String", contentLength: 88}
-     but: "" as String {encoding: "UTF-8", mediaType: "*/*", mimeType: "*/*", class: "java.lang.String", contentLength: 0} at (root)
-	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
+ERROR 2026-02-14 23:49:41,087 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: MuleRuntimeException: There was '1' error while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
+Full list:
+org.xml.sax.SAXParseException; lineNumber: 170; columnNumber: 68; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":then-throw}'. One of '{"http://www.mulesoft.org/schema/mule/munit-tools":then-return, "http://www.mulesoft.org/schema/mule/munit-tools":then-call}' is expected.
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ERROR 2026-02-14 22:17:52,946 [munit.01] org.mule.munit.runner.model.Suite: FAILURE - test: workday-wfm-absentismo-test-suite-workday-wfm-absentismo-flowTest - Time elapsed: 1.01 sec
-================================================================================
-= Tests run: 1 - Failed: 1 - Errors: 0 - Skipped: 0 - Time elapsed: 1.03 sec   =
-================================================================================
-INFO  2026-02-14 22:17:52,948 [munit.01] org.mule.munit.runner.remote.api.server.RunnerServer: Waiting for client connection 
-INFO  2026-02-14 22:17:52,950 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: ================== Request to Undeploy Artifact: prc-auchan-workday-wfm
-INFO  2026-02-14 22:17:53,066 [pool-4-thread-1] org.mule.munit.remote.coverage.server.CoverageServer: Coverage client connection received from view-localhost - true
-INFO  2026-02-14 22:17:53,080 [pool-12-thread-1] org.mule.munit.remote.coverage.CoverageManager: accumulating covered locations
-INFO  2026-02-14 22:17:53,088 [pool-4-thread-1] org.mule.munit.remote.coverage.server.CoverageServer: Coverage client connection received from view-localhost - true
-INFO  2026-02-14 22:17:53,096 [Embedded] org.mule.runtime.core.internal.logging: 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ Stopping application 'prc-auchan-workday-wfm'                                +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-14 22:17:53,100 [pool-13-thread-1] org.mule.munit.remote.coverage.CoverageManager: accumulating covered locations
-INFO  2026-02-14 22:17:53,102 [Embedded] org.mule.runtime.core.internal.construct.FlowConstructLifecycleManager: Stopping flow: workday-wfm-absentismo-flow
-INFO  2026-02-14 22:17:53,104 [Embedded] org.mule.runtime.core.internal.construct.AbstractFlowConstruct: Not stopping source for 'workday-wfm-absentismo-flow', it was not started because of org.mule.munit.runner.component.state.MunitComponentInitialStateManager@7433260a
-INFO  2026-02-14 22:17:53,140 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_Oauth2token
-INFO  2026-02-14 22:17:53,140 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_GoogleFileUpload
-INFO  2026-02-14 22:17:53,140 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Auchan_SFTP_Config
-INFO  2026-02-14 22:17:53,158 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Crypto_Pgp
-INFO  2026-02-14 22:17:53,158 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Amazon_S3_Configuration
-INFO  2026-02-14 22:17:53,241 [Embedded] org.mule.runtime.core.internal.logging: 
+org.mule.runtime.deployment.model.api.DeploymentInitException: MuleRuntimeException: There was '1' error while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
+Full list:
+org.xml.sax.SAXParseException; lineNumber: 170; columnNumber: 68; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":then-throw}'. One of '{"http://www.mulesoft.org/schema/mule/munit-tools":then-return, "http://www.mulesoft.org/schema/mule/munit-tools":then-call}' is expected.
+
+Caused by: org.mule.runtime.core.api.config.ConfigurationException: There was '1' error while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
+Full list:
+org.xml.sax.SAXParseException; lineNumber: 170; columnNumber: 68; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":then-throw}'. One of '{"http://www.mulesoft.org/schema/mule/munit-tools":then-return, "http://www.mulesoft.org/schema/mule/munit-tools":then-call}' is expected.
+
+Caused by: org.mule.runtime.api.exception.MuleRuntimeException: There was '1' error while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
+Full list:
+org.xml.sax.SAXParseException; lineNumber: 170; columnNumber: 68; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":then-throw}'. One of '{"http://www.mulesoft.org/schema/mule/munit-tools":then-return, "http://www.mulesoft.org/schema/mule/munit-tools":then-call}' is expected.
+
+INFO  2026-02-14 23:49:41,103 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
+INFO  2026-02-14 23:49:41,103 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing application 'prc-auchan-workday-wfm'                               +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-14 22:17:53,241 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
-INFO  2026-02-14 22:17:53,291 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_Oauth2token
-INFO  2026-02-14 22:17:53,293 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_GoogleFileUpload
-INFO  2026-02-14 22:17:53,293 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Auchan_SFTP_Config
-INFO  2026-02-14 22:17:53,293 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Crypto_Pgp
-INFO  2026-02-14 22:17:53,293 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Amazon_S3_Configuration
-INFO  2026-02-14 22:17:53,293 [Embedded] org.mule.runtime.core.internal.construct.FlowConstructLifecycleManager: Disposing flow: workday-wfm-absentismo-flow
-INFO  2026-02-14 22:17:53,513 [Embedded] org.mule.runtime.core.internal.logging: 
-**********************************************************************
-* Application "prc-auchan-workday-wfm" shut down normally on:        *
-* 14/02/26, 10:17 pm                                                 *
-* Up for: 0 days, 0 hours, 0 mins, 20.711 sec                        *
-**********************************************************************
-INFO  2026-02-14 22:17:53,813 [Embedded] org.mule.runtime.core.internal.logging: 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+ Undeployed artifact 'prc-auchan-workday-wfm'                                 +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-14 22:17:53,813 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-14 23:49:41,103 [Embedded] org.mule.runtime.module.deployment.impl.internal.artifact.AbstractDeployableArtifact: Application 'prc-auchan-workday-wfm' never started, nothing to dispose of
+INFO  2026-02-14 23:49:41,103 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Stopping domain 'default'                                                    +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-14 22:17:53,813 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-14 23:49:41,104 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing domain 'default'                                                   +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-14 22:17:53,813 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
-INFO  2026-02-14 22:17:53,820 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-14 23:49:41,104 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
+INFO  2026-02-14 23:49:41,108 [Embedded] org.mule.runtime.core.internal.logging: 
 **********************************************************************
-* Domain "default" shut down normally on: 14/02/26, 10:17 pm         *
-* Up for: 0 days, 0 hours, 0 mins, 30.264 sec                        *
+* Domain "default" shut down normally on: 14/02/26, 11:49 pm         *
+* Up for: 0 days, 0 hours, 0 mins, 4.946 sec                         *
 **********************************************************************
-INFO  2026-02-14 22:17:54,009 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
-INFO  2026-02-14 22:17:54,549 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@7d7a5d97
-INFO  2026-02-14 22:17:55,609 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
-INFO  2026-02-14 22:17:55,611 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
-INFO  2026-02-14 22:17:55,631 [main] org.mule.munit.remote.RemoteRunner: Done
+INFO  2026-02-14 23:49:41,152 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
+INFO  2026-02-14 23:49:41,648 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@659b7ea3
+INFO  2026-02-14 23:49:42,678 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
+INFO  2026-02-14 23:49:42,679 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
+INFO  2026-02-14 23:49:42,688 [main] org.mule.munit.remote.RemoteRunner: Done
