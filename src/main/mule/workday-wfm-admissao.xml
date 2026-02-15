@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-	<flow name="admissao-Flow" doc:id="a8120d34-cecd-44af-9385-30a9e85962aa" >
-		<scheduler doc:name="Scheduler admissao 10 AM" doc:id="5c790850-32ec-41fa-90e9-990ae4218d7f" >
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f563b51d-8bff-4d6d-a6c3-50960988834f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="workday-wfm-admissao-flow" doc:id="a8120d34-cecd-44af-9385-30a9e85962aa" >
+		<!-- [STUDIO:"Scheduler"]<scheduler doc:name="Scheduler" doc:id="5c790850-32ec-41fa-90e9-990ae4218d7f" >
 			<scheduling-strategy >
 				<cron expression="${admissao.scheduler}" timeZone="GMT" />
 			</scheduling-strategy>
-		</scheduler>
-		<logger level="INFO" doc:name="Log Admissao Started" doc:id="0cf5662d-5510-4245-ab30-f757eb471469" message="Admissao Scheduler flow started at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+		</scheduler> [STUDIO] -->
+		<http:listener doc:name="Listener" doc:id="1eb78452-14ac-414a-8244-a7b395a84620" path="/admissao" config-ref="HTTP_Listener_config"/>
 		<set-variable value="PRT_WFM_PRT_Admissao" doc:name="varFlowName" doc:id="5f5d8619-16b5-4a7e-991a-3975637b061d" variableName="varFlowName" />
 		<flow-ref doc:name="workday_wfm_Sub_Flow Flow Reference" doc:id="df8351cd-ff4e-4ae8-9f78-a2c0b9b8a0df" name="workday_wfm_Sub_Flow" />
-		<logger level="INFO" doc:name="Log Admissao WFM publish completed" doc:id="2dc9f63d-3d79-4b97-9334-8dd88983b0dc" message="Admissao Scheduler flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+		<logger level="INFO" doc:name="Log Admissao WFM publish completed" doc:id="2dc9f63d-3d79-4b97-9334-8dd88983b0dc" message="admissao Scheduler flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
 	</flow>
 </mule>

@@ -20,7 +20,10 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
 http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
 
-    <sub-flow name="workday_wfm_Sub_Flow" doc:id="1e52184a-2b6f-4449-bcec-356cd48c264f">
+  <!--  <file:config name="File_Config" doc:name="File Config" doc:id="65092939-2f21-4b14-ae3d-9f0ad1fd3d83" >
+		<file:connection workingDir="C:\Users\swmuthya\Talend\Source Files" />
+	</file:config> -->
+	<sub-flow name="workday_wfm_Sub_Flow" doc:id="1e52184a-2b6f-4449-bcec-356cd48c264f">
 	<logger level="INFO" message="Reading Flow configurations" doc:name="Log that Flow Config initialized" category="com.auchan.prc-auchan-workday-wfm"/>
 		<ee:transform doc:name="Build Input/Output Filenames">
         <ee:message>
@@ -32,7 +35,7 @@ http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/cu
 </ee:transform>
 	<try doc:name="Try" doc:id="2ca329fd-236f-4948-ba43-e34c82835a2b" >
 			<sftp:read config-ref="Auchan_SFTP_Config" path="#[vars.varConfig.InputFileName]" doc:name="SFTP Read input file" timeBetweenSizeCheckUnit="MICROSECONDS" target="varOriginalFilePayload" outputMimeType="text/plain" outputEncoding="ISO-8859-15"/>
-			<!-- [STUDIO:"Read input file"]<file:read doc:name="Read input file" doc:id="381f4d81-7194-47ba-9b1a-f22374c518e7" config-ref="File_Config" path="#[vars.varConfig.InputFileName&#93;" outputMimeType="text/plain" target="varOriginalFilePayload" outputEncoding="ISO-8859-15"/> [STUDIO] -->
+			<!-- <file:read doc:name="Read input file" doc:id="381f4d81-7194-47ba-9b1a-f22374c518e7" config-ref="File_Config" path="#[vars.varConfig.InputFileName&#93;" outputMimeType="text/plain" target="varOriginalFilePayload" outputEncoding="ISO-8859-15"/> -->
 		</try>
 		<choice doc:name="PGP Optional">
             <when expression="#[((vars.varConfig.EncryptionFlag) as Boolean)]">
