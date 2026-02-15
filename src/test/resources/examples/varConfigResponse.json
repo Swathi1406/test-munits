@@ -1,0 +1,7 @@
+{
+  "InputFileName": "Absentismo20260215.csv",
+  "WorkdayFileName": "Absentismo20260215_20260215150450.csv",
+  "OutputFileName": "Absences_Auchan_20260215_20260215150450.csv",
+  "EncryptionFlag": false,
+  "dwlMappingFile": "absentismoFinalResponse.dwl"
+}

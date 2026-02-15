@@ -1,0 +1,2 @@
+Employee_ID;Absence_Date;First_Day_of_Leave;Last_Day_of_Leave;MOT_AP_ID_Licenca;MOT_AP_ID_Ferias;MOT_AP_ID_Time_off;Quantidade_Calculada_Horas;Accao
+E123;2025-10-10;;;ABCD;;;;;corrigido
