@@ -1,45 +1,45 @@
-ERROR 2026-02-15 13:43:58,445 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
+ERROR 2026-02-15 13:51:11,973 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
 Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 78; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 71; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
+org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
 
 org.mule.runtime.deployment.model.api.DeploymentInitException: MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
 Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 78; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 71; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
+org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
 
 Caused by: org.mule.runtime.core.api.config.ConfigurationException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
 Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 78; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 71; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
+org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
 
 Caused by: org.mule.runtime.api.exception.MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
 Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 78; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 71; cvc-complex-type.2.4.a: Invalid content was found starting with element '{"http://www.mulesoft.org/schema/mule/munit-tools":exception}'. One of '{"http://www.mulesoft.org/schema/mule/core":annotations, "http://www.mulesoft.org/schema/mule/munit-tools":payload, "http://www.mulesoft.org/schema/mule/munit-tools":attributes, "http://www.mulesoft.org/schema/mule/munit-tools":error, "http://www.mulesoft.org/schema/mule/munit-tools":variables}' is expected.
+org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
 
-INFO  2026-02-15 13:43:58,457 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
-INFO  2026-02-15 13:43:58,458 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
+INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing application 'prc-auchan-workday-wfm'                               +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:43:58,458 [Embedded] org.mule.runtime.module.deployment.impl.internal.artifact.AbstractDeployableArtifact: Application 'prc-auchan-workday-wfm' never started, nothing to dispose of
-INFO  2026-02-15 13:43:58,458 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.module.deployment.impl.internal.artifact.AbstractDeployableArtifact: Application 'prc-auchan-workday-wfm' never started, nothing to dispose of
+INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Stopping domain 'default'                                                    +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:43:58,459 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 13:51:11,986 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing domain 'default'                                                   +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:43:58,459 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
-INFO  2026-02-15 13:43:58,462 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 13:51:11,986 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
+INFO  2026-02-15 13:51:11,988 [Embedded] org.mule.runtime.core.internal.logging: 
 **********************************************************************
-* Domain "default" shut down normally on: 15/02/26, 1:43 pm          *
-* Up for: 0 days, 0 hours, 0 mins, 4.512 sec                         *
+* Domain "default" shut down normally on: 15/02/26, 1:51 pm          *
+* Up for: 0 days, 0 hours, 0 mins, 3.596 sec                         *
 **********************************************************************
-INFO  2026-02-15 13:43:58,546 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
-INFO  2026-02-15 13:43:58,946 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@35e69c8e
-INFO  2026-02-15 13:43:59,966 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
-INFO  2026-02-15 13:43:59,967 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
-INFO  2026-02-15 13:43:59,970 [main] org.mule.munit.remote.RemoteRunner: Done
+INFO  2026-02-15 13:51:12,023 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
+INFO  2026-02-15 13:51:12,375 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@28f497a3
+INFO  2026-02-15 13:51:13,397 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
+INFO  2026-02-15 13:51:13,398 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
+INFO  2026-02-15 13:51:13,402 [main] org.mule.munit.remote.RemoteRunner: Done
