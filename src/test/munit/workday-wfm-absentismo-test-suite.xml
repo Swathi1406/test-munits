@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xsi:schemaLocation="
-		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
-		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+    xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+    xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+    xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+    xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+    xmlns:http="http://www.mulesoft.org/schema/mule/http"
+    xmlns:crypto="http://www.mulesoft.org/schema/mule/crypto"
+    xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+        http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+        http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/crypto http://www.mulesoft.org/schema/mule/crypto/current/mule-crypto.xsd
+        http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+        http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="workday-wfm-absentismo-test-suite.xml" />
 	<munit:test name="workday-wfm-absentismo-test-suite-workday-wfm-absentismo-flowTest" doc:id="6070bef5-aba5-4296-b418-35deeaf86812" description="Test">
 		<munit:behavior >
-            <!-- [STUDIO:"Mock Build Input/Output Filenames"]<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
+			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
                     <munit-tools:variables>
-                        <munit-tools:variable key="varConfig" value="#[{
-                            InputFileName: '/tmp/absentismo-input.csv',
-                            OutputFileName: 'absentismo-output.csv',
-                            WorkdayFileName: 'absentismo-workday.csv',
-                            dwlMappingFile: 'absentismoFinalResponse.dwl',
-                            EncryptionFlag: false
-                        }&#93;" />
+                        <munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
                     </munit-tools:variables>
                 </munit-tools:then-return>
-            </munit-tools:mock-when> [STUDIO] -->
+            </munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -36,20 +40,6 @@
                     </munit-tools:variables>
                 </munit-tools:then-return>
             </munit-tools:mock-when>
-            <!-- [STUDIO:"Mock varMapping"]<munit-tools:mock-when processor="set-variable" doc:name="Mock varMapping">
-                <munit-tools:with-attributes>
-                    <munit-tools:with-attribute attributeName="doc:name" whereValue="varMapping" />
-                </munit-tools:with-attributes>
-                <munit-tools:then-return />
-            </munit-tools:mock-when> [STUDIO] -->
-            <!-- [STUDIO:"Mock Dynamic Evaluate"]<munit-tools:mock-when processor="ee:dynamic-evaluate" doc:name="Mock Dynamic Evaluate">
-                <munit-tools:with-attributes>
-                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Dynamic Evaluate" />
-                </munit-tools:with-attributes>
-                <munit-tools:then-return>
-                    <munit-tools:payload value="#['col1;col2\n1;2'&#93;" mediaType="text/plain" />
-                </munit-tools:then-return>
-            </munit-tools:mock-when> [STUDIO] -->
 		<munit-tools:mock-when processor="flow-ref" doc:name="Mock upload-to-oracle-subflow">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="name" whereValue="upload-to-oracle-subflow" />
@@ -83,22 +73,23 @@
 	</munit:test>
 	<munit:test name="workday-wfm-absentismo-test-suite-sftp-file-not-found-flowTest" doc:id="82f844dd-3b34-4af1-8489-8de7758561de" description="Test">
 		<munit:behavior >
-		<munit-tools:spy processor="ee:transform" doc:name="Spy Build Input/Output Filenames (inject varConfig)">
-      <munit-tools:with-attributes>
-        <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames"/>
-      </munit-tools:with-attributes>
-      <munit-tools:after-call>
-        <!-- NOTE the property name: InputFileName (not SFTPInputFileName) -->
-        <set-variable variableName="varConfig" value="#[MunitTools::getResourceAsString('examples/varConfigResponse.json')]"/>
-      </munit-tools:after-call>
-    </munit-tools:spy>
+			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames"/>
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
-        <munit-tools:error typeId="SFTP:FILE_NOT_FOUND"/>
-      </munit-tools:then-return>
+                                        <munit-tools:error typeId="SFTP:FILE_NOT_FOUND" />
+                                </munit-tools:then-return>
             </munit-tools:mock-when>
             <munit-tools:mock-when processor="s3:put-object"/>
     <munit-tools:mock-when processor="http:request">
@@ -124,56 +115,39 @@
 	</munit:test>
 	<munit:test name="absentismo-Flow-upload-error" doc:id="2e66b7c5-8d94-45e6-8014-340e6f22cfa5" description="Upload error should invoke error-flow">
         <munit:behavior>
-            <munit-tools:spy doc:name="Spy Build Input/Output Filenames (inject varConfig)" doc:id="f9f0e4a7-520f-43d1-8c0e-0af051fc9005" processor="ee:transform">
+			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
 				<munit-tools:with-attributes>
 					<munit-tools:with-attribute whereValue="Build Input/Output Filenames" attributeName="doc:name" />
 				</munit-tools:with-attributes>
-				<munit-tools:after-call>
-					<set-variable value="#[MunitTools::getResourceAsString('examples/varConfigResponse.json')]" doc:name="Set Variable" doc:id="194b949d-39aa-407c-8c80-bdf89d45e5d3" variableName="varConfig" />
-				</munit-tools:after-call>
-			</munit-tools:spy>
+				<munit-tools:then-return>
+					<munit-tools:variables>
+						<munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
 			<munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
       <munit-tools:with-attributes>
         <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file"/>
       </munit-tools:with-attributes>
       <munit-tools:then-return>
-        <munit-tools:payload value="#[MunitTools::getResourceAsString('examples/sftpInputRequest.txt')]"
-                             mediaType="text/plain"/>
+                <munit-tools:variables>
+                        <munit-tools:variable key="varOriginalFilePayload" value="#[MunitTools::getResourceAsString('examples/sftpInputRequest.txt')]" />
+                </munit-tools:variables>
       </munit-tools:then-return>
     </munit-tools:mock-when>
-    <munit-tools:spy processor="sftp:read" doc:name="Spy SFTP – set varOriginalFilePayload">
-      <munit-tools:after-call>
-        <set-variable variableName="varOriginalFilePayload"
-                      value="#[MunitTools::getResourceAsString('examples/sftpInputRequest.txt')]"/>
-      </munit-tools:after-call>
-    </munit-tools:spy>
-			<!-- [STUDIO:"Mock varMapping"]<munit-tools:mock-when processor="set-variable" doc:name="Mock varMapping">
-                <munit-tools:with-attributes>
-                    <munit-tools:with-attribute attributeName="doc:name" whereValue="varMapping" />
-                </munit-tools:with-attributes>
-                <munit-tools:then-return />
-            </munit-tools:mock-when> [STUDIO] -->
-            <!-- [STUDIO:"Mock Dynamic Evaluate"]<munit-tools:mock-when processor="ee:dynamic-evaluate" doc:name="Mock Dynamic Evaluate">
-                <munit-tools:with-attributes>
-                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Dynamic Evaluate" />
-                </munit-tools:with-attributes>
-                <munit-tools:then-return>
-                    <munit-tools:payload value="#['col1;col2\n1;2'&#93;" mediaType="text/plain" />
-                </munit-tools:then-return>
-            </munit-tools:mock-when> [STUDIO] -->
             <munit-tools:mock-when processor="flow-ref" doc:name="Mock upload-to-oracle-subflow error">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="name" whereValue="upload-to-oracle-subflow" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
-        <munit-tools:error typeId="HTTP:CONNECTIVITY"/>
-      </munit-tools:then-return>
+                                        <munit-tools:error typeId="HTTP:CONNECTIVITY" />
+                                </munit-tools:then-return>
 
             </munit-tools:mock-when>
         
 </munit:behavior>
         <munit:execution>
-            <flow-ref doc:name="Flow-ref to absentismo-Flow" doc:id="1a176a63-2e3f-4960-86ef-f305823ad090" name="workday-wfm-absentismo-flow" />
+            <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="1a176a63-2e3f-4960-86ef-f305823ad090" name="workday-wfm-absentismo-flow" />
         </munit:execution>
 		<munit:validation>
 			<set-variable value="#[MunitTools::getResourceAsString('examples/sftpErrorResponse.json')]" doc:name="Set varExpected" doc:id="c9ec2532-8cc8-405f-ae89-ea251c28ddbe" variableName="varExpected" />
