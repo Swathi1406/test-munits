@@ -1,45 +1,335 @@
-ERROR 2026-02-15 13:51:11,973 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
-Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+Running test: workday-wfm-absentismo-flow-sftp-file-not-found - SFTP file not+
++  found should invoke error-flow                                              +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2026-02-15 14:26:37,405 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_LITE @3e0b7502] com.auchan.prc-auchan-workday-wfm: Reading Flow configurations
+ERROR 2026-02-15 14:26:37,587 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] org.mule.runtime.core.privileged.exception.DefaultExceptionListener: 
+********************************************************************************
+Message               : No value present
+Element               : workday_wfm_Sub_Flow/processors/2/processors/0 @ prc-auchan-workday-wfm:prc-auchan-workday-wfm.xml:34 (SFTP Read input file)
+Element DSL           : <sftp:read config-ref="Auchan_SFTP_Config" path="#[vars.varConfig.InputFileName]" doc:name="SFTP Read input file" timeBetweenSizeCheckUnit="MICROSECONDS" target="varOriginalFilePayload" outputMimeType="text/plain" outputEncoding="ISO-8859-15"></sftp:read>
+Error type            : MULE:UNKNOWN
+FlowStack             : at workday_wfm_Sub_Flow(workday_wfm_Sub_Flow/processors/2/processors/0 @ prc-auchan-workday-wfm:prc-auchan-workday-wfm.xml:34 (SFTP Read input file))
+at workday-wfm-absentismo-flow(workday-wfm-absentismo-flow/processors/1 @ prc-auchan-workday-wfm:workday-wfm-absentismo.xml:15 (workday_wfm_Sub_Flow Flow Reference))
+--------------------------------------------------------------------------------
+Root Exception stack trace:
+java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.failProcessor(MunitProcessorInterceptor.java:197)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.around(MunitProcessorInterceptor.java:120)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ProcessorInterceptorWrapper.around(ProcessorInterceptorWrapper.java:68)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doAround$3(ReactiveAroundInterceptorAdapter.java:95)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ExceptionUtils.tryExpecting(ExceptionUtils.java:224)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1112)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1030)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.doAround(ReactiveAroundInterceptorAdapter.java:94)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doApply$0(ReactiveAroundInterceptorAdapter.java:71)
+	at reactor.core.* (39 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (28 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2147)
+	at reactor.core.* (12 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (6 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
 
-org.mule.runtime.deployment.model.api.DeploymentInitException: MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
-Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+********************************************************************************
 
-Caused by: org.mule.runtime.core.api.config.ConfigurationException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
-Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+INFO  2026-02-15 14:26:37,632 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: Response - {
+  "resultCode": "MULE:UNKNOWN",
+  "resultDesc": "No value present"
+}
+ERROR 2026-02-15 14:26:37,635 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] org.mule.runtime.core.privileged.exception.DefaultExceptionListener: 
+********************************************************************************
+Message               : No value present
+Element               : workday_wfm_Sub_Flow/processors/2/processors/0 @ prc-auchan-workday-wfm:prc-auchan-workday-wfm.xml:34 (SFTP Read input file)
+Element DSL           : <sftp:read config-ref="Auchan_SFTP_Config" path="#[vars.varConfig.InputFileName]" doc:name="SFTP Read input file" timeBetweenSizeCheckUnit="MICROSECONDS" target="varOriginalFilePayload" outputMimeType="text/plain" outputEncoding="ISO-8859-15"></sftp:read>
+Error type            : MULE:UNKNOWN
+FlowStack             : at workday_wfm_Sub_Flow(workday_wfm_Sub_Flow/processors/2/processors/0 @ prc-auchan-workday-wfm:prc-auchan-workday-wfm.xml:34 (SFTP Read input file))
+at workday-wfm-absentismo-flow(workday-wfm-absentismo-flow/processors/1 @ prc-auchan-workday-wfm:workday-wfm-absentismo.xml:15 (workday_wfm_Sub_Flow Flow Reference))
+--------------------------------------------------------------------------------
+Root Exception stack trace:
+java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.failProcessor(MunitProcessorInterceptor.java:197)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.around(MunitProcessorInterceptor.java:120)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ProcessorInterceptorWrapper.around(ProcessorInterceptorWrapper.java:68)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doAround$3(ReactiveAroundInterceptorAdapter.java:95)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ExceptionUtils.tryExpecting(ExceptionUtils.java:224)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1112)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1030)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.doAround(ReactiveAroundInterceptorAdapter.java:94)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doApply$0(ReactiveAroundInterceptorAdapter.java:71)
+	at reactor.core.* (39 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (28 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2147)
+	at reactor.core.* (12 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (6 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
 
-Caused by: org.mule.runtime.api.exception.MuleRuntimeException: There were '2' errors while parsing the given file 'workday-wfm-absentismo-test-suite.xml'.
-Full list:
-org.xml.sax.SAXParseException; lineNumber: 114; columnNumber: 74; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
-org.xml.sax.SAXParseException; lineNumber: 192; columnNumber: 67; cvc-complex-type.3.2.2: Attribute 'errorType' is not allowed to appear in element 'munit-tools:error'.
+********************************************************************************
 
-INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
-INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 14:26:37,639 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: Response - {
+  "resultCode": "MULE:UNKNOWN",
+  "resultDesc": "No value present"
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+org.mule.munit.runner.model.TestExecutionException: Error [MULE:UNKNOWN] while running test 'workday-wfm-absentismo-flow-sftp-file-not-found':No value present
+	at org.mule.munit.runner.flow.TestFlow.run(TestFlow.java:320)
+	at org.mule.munit.runner.model.Test.run(Test.java:98)
+	at org.mule.munit.runner.model.Suite.run(Suite.java:112)
+	at org.mule.munit.runner.SuiteRunner.doRun(SuiteRunner.java:61)
+	at org.mule.munit.runner.SuiteRunner.run(SuiteRunner.java:46)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.runSuite(RunMessageHandler.java:97)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.parseAndRun(RunMessageHandler.java:80)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.handle(RunMessageHandler.java:73)
+	at org.mule.munit.runner.remote.api.server.RunnerServer.handleClientMessage(RunnerServer.java:146)
+	at org.mule.munit.runner.remote.api.server.RunnerServer.run(RunnerServer.java:94)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.util.concurrent.ExecutionException: org.mule.runtime.api.component.execution.ComponentExecutionException: java.util.NoSuchElementException: No value present
+	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:396)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2073)
+	at org.mule.munit.runner.flow.TestFlow$ExceptionAwareCallable.call(TestFlow.java:384)
+	at org.mule.munit.runner.flow.TestFlow$ExceptionAwareCallable.call(TestFlow.java:373)
+	... 6 more
+Caused by: org.mule.runtime.api.component.execution.ComponentExecutionException: java.util.NoSuchElementException: No value present
+Caused by: java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.failProcessor(MunitProcessorInterceptor.java:197)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.around(MunitProcessorInterceptor.java:120)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ProcessorInterceptorWrapper.around(ProcessorInterceptorWrapper.java:68)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doAround$3(ReactiveAroundInterceptorAdapter.java:95)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ExceptionUtils.tryExpecting(ExceptionUtils.java:224)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1112)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1030)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.doAround(ReactiveAroundInterceptorAdapter.java:94)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doApply$0(ReactiveAroundInterceptorAdapter.java:71)
+	at reactor.core.* (39 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (28 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2147)
+	at reactor.core.* (12 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (6 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ERROR 2026-02-15 14:26:37,660 [munit.01] org.mule.munit.runner.model.Suite: ERROR - test: workday-wfm-absentismo-flow-sftp-file-not-found - Time elapsed: 0.35 sec
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Running test: workday-wfm-absentismo-flow-upload-error - Upload error should +
++ invoke error-flow                                                            +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2026-02-15 14:26:37,670 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_LITE @3e0b7502] com.auchan.prc-auchan-workday-wfm: Reading Flow configurations
+INFO  2026-02-15 14:26:37,686 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: PGP disabled
+Feb 15, 2026 2:26:37 PM org.mule.weave.v2.model.service.DefaultLoggingService$ logWarn
+WARNING: Using Weave Reader at Runtime May Cause Performance Issues. It is strongly advice to either use with `onlyData=true` or try other MimeType. This format was design for debugging and design only.
+ERROR 2026-02-15 14:26:37,896 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] org.mule.runtime.core.privileged.exception.DefaultExceptionListener: 
+********************************************************************************
+Message               : 
+Element               : (None)
+Element DSL           : (None)
+Error type            : MULE:UNKNOWN
+FlowStack             : (None)
+--------------------------------------------------------------------------------
+Root Exception stack trace:
+org.mule.runtime.core.internal.processor.interceptor.InterceptionException: 
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveInterceptionAction.failWithMessage(ReactiveInterceptionAction.java:110)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveInterceptionAction.fail(ReactiveInterceptionAction.java:123)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.failProcessor(MunitProcessorInterceptor.java:197)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.around(MunitProcessorInterceptor.java:120)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ProcessorInterceptorWrapper.around(ProcessorInterceptorWrapper.java:68)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doAround$3(ReactiveAroundInterceptorAdapter.java:95)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ExceptionUtils.tryExpecting(ExceptionUtils.java:224)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1112)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1030)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.doAround(ReactiveAroundInterceptorAdapter.java:94)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doApply$0(ReactiveAroundInterceptorAdapter.java:71)
+	at reactor.core.* (61 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2147)
+	at reactor.core.* (12 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (6 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+********************************************************************************
+
+INFO  2026-02-15 14:26:37,901 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: Response - {
+  "resultCode": "MULE:UNKNOWN",
+  "resultDesc": ""
+}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+org.mule.munit.runner.model.TestExecutionException: Error [MULE:UNKNOWN] while running test 'workday-wfm-absentismo-flow-upload-error':
+	at org.mule.munit.runner.flow.TestFlow.run(TestFlow.java:320)
+	at org.mule.munit.runner.model.Test.run(Test.java:98)
+	at org.mule.munit.runner.model.Suite.run(Suite.java:112)
+	at org.mule.munit.runner.SuiteRunner.doRun(SuiteRunner.java:61)
+	at org.mule.munit.runner.SuiteRunner.run(SuiteRunner.java:46)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.runSuite(RunMessageHandler.java:97)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.parseAndRun(RunMessageHandler.java:80)
+	at org.mule.munit.runner.remote.api.server.RunMessageHandler.handle(RunMessageHandler.java:73)
+	at org.mule.munit.runner.remote.api.server.RunnerServer.handleClientMessage(RunnerServer.java:146)
+	at org.mule.munit.runner.remote.api.server.RunnerServer.run(RunnerServer.java:94)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.util.concurrent.ExecutionException: org.mule.runtime.api.component.execution.ComponentExecutionException: org.mule.runtime.core.internal.processor.interceptor.InterceptionException: 
+	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:396)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2073)
+	at org.mule.munit.runner.flow.TestFlow$ExceptionAwareCallable.call(TestFlow.java:384)
+	at org.mule.munit.runner.flow.TestFlow$ExceptionAwareCallable.call(TestFlow.java:373)
+	... 6 more
+Caused by: org.mule.runtime.api.component.execution.ComponentExecutionException: org.mule.runtime.core.internal.processor.interceptor.InterceptionException: 
+Caused by: org.mule.runtime.core.internal.processor.interceptor.InterceptionException: 
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveInterceptionAction.failWithMessage(ReactiveInterceptionAction.java:110)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveInterceptionAction.fail(ReactiveInterceptionAction.java:123)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.failProcessor(MunitProcessorInterceptor.java:197)
+	at org.mule.munit.mock.interception.MunitProcessorInterceptor.around(MunitProcessorInterceptor.java:120)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ProcessorInterceptorWrapper.around(ProcessorInterceptorWrapper.java:68)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doAround$3(ReactiveAroundInterceptorAdapter.java:95)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ExceptionUtils.tryExpecting(ExceptionUtils.java:224)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1112)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.api.util.ClassUtils.withContextClassLoader(ClassUtils.java:1030)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.doAround(ReactiveAroundInterceptorAdapter.java:94)
+	at org.mule.runtime.core@4.9.10/org.mule.runtime.core.internal.processor.interceptor.ReactiveAroundInterceptorAdapter.lambda$doApply$0(ReactiveAroundInterceptorAdapter.java:71)
+	at reactor.core.* (61 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:934)
+	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:911)
+	at java.base/java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:510)
+	at java.base/java.util.concurrent.CompletableFuture.complete(CompletableFuture.java:2147)
+	at reactor.core.* (12 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at org.mule.runtime.core.privileged.processor.chain.* (2 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at reactor.core.* (6 elements filtered from stack; set debug level logging or '-Dmule.verbose.exceptions=true' for everything)(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.AbstractRunnableFutureDecorator.doRun(AbstractRunnableFutureDecorator.java:180)
+	at org.mule.service.scheduler@1.9.10/org.mule.service.scheduler.internal.RunnableFutureDecorator.run(RunnableFutureDecorator.java:56)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ERROR 2026-02-15 14:26:37,903 [munit.01] org.mule.munit.runner.model.Suite: ERROR - test: workday-wfm-absentismo-flow-upload-error - Time elapsed: 0.24 sec
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Running test: absentismo-Flow-success - Success end-to-end for absentismo-Flo+
++ w with encryption disabled                                                   +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2026-02-15 14:26:37,913 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_LITE @3e0b7502] com.auchan.prc-auchan-workday-wfm: Reading Flow configurations
+INFO  2026-02-15 14:26:37,922 [[MuleRuntime].uber.05: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: PGP disabled
+Feb 15, 2026 2:26:37 PM org.mule.weave.v2.model.service.DefaultLoggingService$ logWarn
+WARNING: Using Weave Reader at Runtime May Cause Performance Issues. It is strongly advice to either use with `onlyData=true` or try other MimeType. This format was design for debugging and design only.
+INFO  2026-02-15 14:26:38,039 [[MuleRuntime].uber.12: [prc-auchan-workday-wfm].workday-wfm-absentismo-flow.CPU_INTENSIVE @3fb1bcbd] com.auchan.prc-auchan-workday-wfm: absentismo Scheduler flow completed at 2026-02-15T14:26:38.038883900+05:30[Asia/Calcutta]
+INFO  2026-02-15 14:26:38,085 [munit.01] org.mule.munit.runner.model.Suite: SUCCESS - test: absentismo-Flow-success - Time elapsed: 0.18 sec
+================================================================================
+= Tests run: 3 - Failed: 0 - Errors: 2 - Skipped: 0 - Time elapsed: 0.79 sec   =
+================================================================================
+INFO  2026-02-15 14:26:38,086 [munit.01] org.mule.munit.runner.remote.api.server.RunnerServer: Waiting for client connection 
+INFO  2026-02-15 14:26:38,087 [Embedded] org.mule.runtime.module.deployment.internal.DefaultArchiveDeployer: ================== Request to Undeploy Artifact: prc-auchan-workday-wfm
+INFO  2026-02-15 14:26:38,161 [pool-4-thread-1] org.mule.munit.remote.coverage.server.CoverageServer: Coverage client connection received from view-localhost - true
+INFO  2026-02-15 14:26:38,167 [pool-4-thread-1] org.mule.munit.remote.coverage.server.CoverageServer: Coverage client connection received from view-localhost - true
+INFO  2026-02-15 14:26:38,168 [pool-12-thread-1] org.mule.munit.remote.coverage.CoverageManager: accumulating covered locations
+INFO  2026-02-15 14:26:38,170 [Embedded] org.mule.runtime.core.internal.logging: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Stopping application 'prc-auchan-workday-wfm'                                +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2026-02-15 14:26:38,172 [pool-13-thread-1] org.mule.munit.remote.coverage.CoverageManager: accumulating covered locations
+INFO  2026-02-15 14:26:38,172 [Embedded] org.mule.runtime.core.internal.construct.FlowConstructLifecycleManager: Stopping flow: workday-wfm-absentismo-flow
+INFO  2026-02-15 14:26:38,173 [Embedded] org.mule.runtime.core.internal.construct.AbstractFlowConstruct: Not stopping source for 'workday-wfm-absentismo-flow', it was not started because of org.mule.munit.runner.component.state.MunitComponentInitialStateManager@25d4728a
+WARN  2026-02-15 14:26:43,178 [Embedded] org.mule.runtime.core.internal.processor.strategy.AbstractStreamProcessingStrategyFactory: Subscribers of ProcessingStrategy for flow 'workday-wfm-absentismo-flow' not completed in 5000 ms
+WARN  2026-02-15 14:26:43,178 [Embedded] org.mule.runtime.core.internal.processor.strategy.AbstractStreamProcessingStrategyFactory: Subscribers of ProcessingStrategy for flow 'workday-wfm-absentismo-flow' not completed in 5000 ms
+INFO  2026-02-15 14:26:43,184 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_Oauth2token
+INFO  2026-02-15 14:26:43,185 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_GoogleFileUpload
+INFO  2026-02-15 14:26:43,185 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Auchan_SFTP_Config
+INFO  2026-02-15 14:26:43,187 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Crypto_Pgp
+INFO  2026-02-15 14:26:43,187 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Stopping Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Amazon_S3_Configuration
+INFO  2026-02-15 14:26:43,354 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing application 'prc-auchan-workday-wfm'                               +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.module.deployment.impl.internal.artifact.AbstractDeployableArtifact: Application 'prc-auchan-workday-wfm' never started, nothing to dispose of
-INFO  2026-02-15 13:51:11,985 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 14:26:43,354 [Embedded] org.mule.runtime.core.internal.logging: Stopping app 'prc-auchan-workday-wfm' with no mule context
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_Oauth2token
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-HTTPS_Request_GoogleFileUpload
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Auchan_SFTP_Config
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Crypto_Pgp
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.lifecycle.AbstractLifecycleManager: Disposing Bean: org.mule.runtime.module.extension.internal.runtime.config.ConfigurationProviderToolingAdapter-Amazon_S3_Configuration
+INFO  2026-02-15 14:26:43,387 [Embedded] org.mule.runtime.core.internal.construct.FlowConstructLifecycleManager: Disposing flow: workday-wfm-absentismo-flow
+INFO  2026-02-15 14:26:43,584 [Embedded] org.mule.runtime.core.internal.logging: 
+**********************************************************************
+* Application "prc-auchan-workday-wfm" shut down normally on:        *
+* 15/02/26, 2:26 pm                                                  *
+* Up for: 0 days, 0 hours, 0 mins, 21.680 sec                        *
+**********************************************************************
+INFO  2026-02-15 14:26:43,770 [Embedded] org.mule.runtime.core.internal.logging: 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++ Undeployed artifact 'prc-auchan-workday-wfm'                                 +
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+INFO  2026-02-15 14:26:43,771 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Stopping domain 'default'                                                    +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:51:11,986 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 14:26:43,771 [Embedded] org.mule.runtime.core.internal.logging: 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 + Disposing domain 'default'                                                   +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO  2026-02-15 13:51:11,986 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
-INFO  2026-02-15 13:51:11,988 [Embedded] org.mule.runtime.core.internal.logging: 
+INFO  2026-02-15 14:26:43,771 [Embedded] org.mule.runtime.core.internal.logging: Stopping domain 'default' with no mule context
+INFO  2026-02-15 14:26:43,772 [Embedded] org.mule.runtime.core.internal.logging: 
 **********************************************************************
-* Domain "default" shut down normally on: 15/02/26, 1:51 pm          *
-* Up for: 0 days, 0 hours, 0 mins, 3.596 sec                         *
+* Domain "default" shut down normally on: 15/02/26, 2:26 pm          *
+* Up for: 0 days, 0 hours, 0 mins, 27.69 sec                         *
 **********************************************************************
-INFO  2026-02-15 13:51:12,023 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
-INFO  2026-02-15 13:51:12,375 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@28f497a3
-INFO  2026-02-15 13:51:13,397 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
-INFO  2026-02-15 13:51:13,398 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
-INFO  2026-02-15 13:51:13,402 [main] org.mule.munit.remote.RemoteRunner: Done
+INFO  2026-02-15 14:26:43,938 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopping DefaultSchedulerService...
+INFO  2026-02-15 14:26:44,203 [Embedded] org.mule.service.scheduler.internal.service.DefaultSchedulerService: Stopped org.mule.service.scheduler.internal.service.DefaultSchedulerService$1@771e793e
+INFO  2026-02-15 14:26:45,216 [main] org.mule.munit.remote.coverage.CoverageManager: Shutting down coverage server
+INFO  2026-02-15 14:26:45,216 [main] org.mule.munit.remote.coverage.CoverageManager: Calculating application coverage
+INFO  2026-02-15 14:26:45,225 [main] org.mule.munit.remote.RemoteRunner: Done
