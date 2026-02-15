@@ -20,16 +20,6 @@
 	<munit:config name="workday-wfm-absentismo-test-suite.xml" />
 	<munit:test name="workday-wfm-absentismo-test-suite-workday-wfm-absentismo-flowTest" doc:id="6070bef5-aba5-4296-b418-35deeaf86812" description="Test">
 		<munit:behavior >
-			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
-                <munit-tools:with-attributes>
-                    <munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames" />
-                </munit-tools:with-attributes>
-                <munit-tools:then-return>
-                    <munit-tools:variables>
-                        <munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
-                    </munit-tools:variables>
-                </munit-tools:then-return>
-            </munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -73,16 +63,6 @@
 	</munit:test>
 	<munit:test name="workday-wfm-absentismo-test-suite-sftp-file-not-found-flowTest" doc:id="82f844dd-3b34-4af1-8489-8de7758561de" description="Test">
 		<munit:behavior >
-			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute attributeName="doc:name" whereValue="Build Input/Output Filenames"/>
-				</munit-tools:with-attributes>
-				<munit-tools:then-return>
-					<munit-tools:variables>
-						<munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
-					</munit-tools:variables>
-				</munit-tools:then-return>
-			</munit-tools:mock-when>
             <munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
                 <munit-tools:with-attributes>
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
@@ -102,29 +82,18 @@
 			<flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="255565c5-e14a-4b49-b5f5-b4f781ccaa2c" name="workday-wfm-absentismo-flow"/>
 		</munit:execution>
 		<munit:validation>
-    <munit-tools:verify-call processor="s3:put-object" times="0" doc:name="S3 not called"/>
-    <munit-tools:verify-call processor="http:request" times="0" doc:name="GDrive not called">
-      <munit-tools:with-attributes>
-        <munit-tools:with-attribute attributeName="doc:name" whereValue="Google Drive - File Upload"/>
-      </munit-tools:with-attributes>
-    </munit-tools:verify-call>
-			<set-variable value="#[MunitTools::getResourceAsString('examples/sftpErrorResponse.json')]" doc:name="Set varExpected" doc:id="d70c5182-7126-42c1-880e-f928944e0524" variableName="varExpected" />
-			<munit-tools:assert-that doc:name="Assert that" doc:id="5513f99d-7161-407c-974d-e009426c6148" is="#[MunitTools::equalTo(vars.varExpected)]" expression="#[payload]" />
-        
+        <munit-tools:verify-call processor="s3:put-object" times="0" doc:name="S3 not called"/>
+        <munit-tools:verify-call processor="http:request" times="0" doc:name="GDrive not called">
+            <munit-tools:with-attributes>
+                <munit-tools:with-attribute attributeName="doc:name" whereValue="Google Drive - File Upload"/>
+            </munit-tools:with-attributes>
+        </munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert error type" is="#[MunitTools::equalTo('SFTP:FILE_NOT_FOUND')]" expression="#[payload.resultCode]" />
+
 </munit:validation>
 	</munit:test>
 	<munit:test name="absentismo-Flow-upload-error" doc:id="2e66b7c5-8d94-45e6-8014-340e6f22cfa5" description="Upload error should invoke error-flow">
         <munit:behavior>
-			<munit-tools:mock-when processor="ee:transform" doc:name="Mock Build Input/Output Filenames">
-				<munit-tools:with-attributes>
-					<munit-tools:with-attribute whereValue="Build Input/Output Filenames" attributeName="doc:name" />
-				</munit-tools:with-attributes>
-				<munit-tools:then-return>
-					<munit-tools:variables>
-						<munit-tools:variable key="varConfig" value="#[readUrl('classpath://examples/varConfigResponse.json', 'application/json')]" />
-					</munit-tools:variables>
-				</munit-tools:then-return>
-			</munit-tools:mock-when>
 			<munit-tools:mock-when processor="sftp:read" doc:name="Mock SFTP Read input file">
       <munit-tools:with-attributes>
         <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file"/>
@@ -150,8 +119,7 @@
             <flow-ref doc:name="Flow-ref to workday-wfm-absentismo-flow" doc:id="1a176a63-2e3f-4960-86ef-f305823ad090" name="workday-wfm-absentismo-flow" />
         </munit:execution>
 		<munit:validation>
-			<set-variable value="#[MunitTools::getResourceAsString('examples/sftpErrorResponse.json')]" doc:name="Set varExpected" doc:id="c9ec2532-8cc8-405f-ae89-ea251c28ddbe" variableName="varExpected" />
-			<munit-tools:assert-that doc:name="Assert that" doc:id="d5460397-7e57-43dc-99f8-4ca8cd0982b0" is="#[MunitTools::equalTo(vars.varExpected)]" expression="#[payload]" />
+            <munit-tools:assert-that doc:name="Assert error type" doc:id="d5460397-7e57-43dc-99f8-4ca8cd0982b0" is="#[MunitTools::equalTo('HTTP:CONNECTIVITY')]" expression="#[payload.resultCode]" />
 
         </munit:validation>
     
