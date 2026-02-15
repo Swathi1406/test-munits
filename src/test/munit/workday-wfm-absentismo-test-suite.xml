@@ -111,7 +111,7 @@
                     <munit-tools:with-attribute attributeName="doc:name" whereValue="SFTP Read input file" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
-                    <munit-tools:exception errorType="SFTP:FILE_NOT_FOUND" />
+                    <munit-tools:error type="SFTP:FILE_NOT_FOUND" />
                 </munit-tools:then-return>
             </munit-tools:mock-when>
         </munit:behavior>
@@ -189,7 +189,7 @@
                     <munit-tools:with-attribute attributeName="name" whereValue="upload-to-oracle-subflow" />
                 </munit-tools:with-attributes>
                 <munit-tools:then-return>
-                    <munit-tools:exception errorType="MULE:UNKNOWN" />
+                    <munit-tools:error type="MULE:UNKNOWN" />
                 </munit-tools:then-return>
             </munit-tools:mock-when>
         </munit:behavior>
