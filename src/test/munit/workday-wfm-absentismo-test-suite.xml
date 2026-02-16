@@ -92,13 +92,14 @@
         
 </munit:validation> -->
 <munit:validation>
+        <munit-tools:assert-error typeId="SFTP:FILE_NOT_FOUND" doc:name="Assert SFTP file not found" />
         <munit-tools:verify-call processor="s3:put-object" times="0" doc:name="S3 not called"/>
         <munit-tools:verify-call processor="http:request" times="0" doc:name="GDrive not called">
             <munit-tools:with-attributes>
                 <munit-tools:with-attribute attributeName="doc:name" whereValue="Google Drive - File Upload"/>
             </munit-tools:with-attributes>
         </munit-tools:verify-call>
-			<munit-tools:assert-that doc:name="Assert error type" is="#[MunitTools::equalTo('SFTP:FILE_NOT_FOUND')]" expression="#[payload.resultCode]" />
+			<munit-tools:assert-that doc:name="Assert error payload" is="#[MunitTools::equalTo('SFTP:FILE_NOT_FOUND')]" expression="#[error.errorMessage.payload.resultCode]" />
 
 </munit:validation>
 	</munit:test>
