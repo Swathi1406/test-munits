@@ -1,4 +1,4 @@
 {
-  "resultCode": "FILE:ILLEGAL_PATH",
+  "resultCode": "SFTP:FILE_NOT_FOUND",
   "resultDesc": "Path 'C:\\Users\\swmuthya\\Talend\\Source Files\\Absentismo20260215.csv' doesn't exist"
 }

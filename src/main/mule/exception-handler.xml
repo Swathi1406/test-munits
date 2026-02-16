@@ -6,6 +6,18 @@
 	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<error-handler name="exception-error-handler" doc:id="0a4845e0-04df-418f-9a24-749550545bcf" doc:description="A global error handler can be useful if you want more than one flow or Try scope to handle errors in the same way.">
+		
+
+  <on-error-propagate type="SFTP:FILE_NOT_FOUND" logException="true" enableNotifications="true">
+    <flow-ref name="error-flow"/>
+  </on-error-propagate>
+
+
+  <!-- 2) HTTP connectivity issue -->
+  <on-error-continue type="HTTP:CONNECTIVITY" logException="true" enableNotifications="true" doc:name="Handle HTTP CONNECTIVITY">
+    <flow-ref name="error-flow" doc:name="error-flow"/>
+  </on-error-continue>
+		
 		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="701b5fc5-a286-4901-af2c-2c108a115bf0" type="ANY" doc:description="On Error Propagate catches all the Errors and process the Mule Flow inside the On Error Propagate block and return the error response">
 			<flow-ref doc:name="error-flow" doc:id="4e89d2bb-08e1-42ab-9b35-fcbf6c84bc6a" name="error-flow" doc:description="Flow Reference routes to raise-error-notifications and executes the processors in that flow." />
 		</on-error-propagate>

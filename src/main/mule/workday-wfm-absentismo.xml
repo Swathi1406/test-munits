@@ -14,5 +14,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<set-variable value="PRT_WFM_PRT_Absentismo" doc:name="varFlowName" doc:id="ad05ee6a-985e-428c-9b90-b2b92312e5d3" variableName="varFlowName" />
 		<flow-ref doc:name="workday_wfm_Sub_Flow Flow Reference" doc:id="201d884a-207f-4420-ab9e-ffc35d09bcf9" name="workday_wfm_Sub_Flow" />
 		<logger level="INFO" doc:name="Log Absentismo WFM publish completed " doc:id="0b0f8306-6e95-489f-afdc-bb7550b1fbe0" message="absentismo Scheduler flow completed at #[now()]" category="com.auchan.prc-auchan-workday-wfm" />
+		<error-handler ref="exception-error-handler" />
 	</flow>
 </mule>
